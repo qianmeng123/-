@@ -3,6 +3,8 @@ package com.atguigu.crowd.mapper;
 import com.atguigu.crowd.entity.Admin;
 import com.atguigu.crowd.entity.AdminExample;
 import java.util.List;
+
+import com.atguigu.crowd.entity.Role;
 import org.apache.ibatis.annotations.Param;
 
 public interface AdminMapper {
@@ -27,4 +29,9 @@ public interface AdminMapper {
     int updateByPrimaryKeySelective(Admin record);
 
     int updateByPrimaryKey(Admin record);
+
+    int count();
+
+    List<Admin> selectPageAndCon(String queryCon);
+
 }
