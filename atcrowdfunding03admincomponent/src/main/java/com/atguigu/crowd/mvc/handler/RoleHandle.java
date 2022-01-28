@@ -1,6 +1,8 @@
 package com.atguigu.crowd.mvc.handler;
 
+import com.atguigu.crowd.entity.Auth;
 import com.atguigu.crowd.entity.Role;
+import com.atguigu.crowd.service.api.AuthService;
 import com.atguigu.crowd.service.api.RoleService;
 import com.atguigu.crowd.util.ResultEntity;
 import com.github.pagehelper.PageInfo;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -19,6 +22,46 @@ public class RoleHandle {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private AuthService authService;
+
+    /**
+     * 分配权限的保存
+     */
+
+    @ResponseBody
+    @RequestMapping("/admin/save/authRole.json")
+    public ResultEntity<String> saveAuth(@RequestBody Map<String,List<Integer>> map){
+              authService.saveAuth(map);
+         return ResultEntity.successWithoutData();
+    }
+
+
+    /**
+     *复选框的默认勾选
+     */
+    @ResponseBody
+    @RequestMapping("/admin/showData/authRole.json")
+    public ResultEntity<List<Integer>> showChecked(Integer roleId){
+          List<Integer> listAuth=authService.getAuthId(roleId);
+       return ResultEntity.successWithData(listAuth);
+    }
+
+
+
+    /**
+     * 权限展现
+     */
+    @ResponseBody
+    @RequestMapping("/admin/getAll/authRole.json")
+    public ResultEntity<List<Auth>> getAuth(){
+           List<Auth> listAuth=authService.getAllAuth();
+           return ResultEntity.successWithData(listAuth);
+    }
+
+
+
 
     /**
      * 删除
@@ -42,9 +85,10 @@ public class RoleHandle {
     @RequestMapping("/admin/role/update.json")
     @ResponseBody
     public ResultEntity<String> updateRole(Role role){
-                      roleService.updateRole(role);
-                   ResultEntity<String> resultEntity=ResultEntity.successWithoutData();
-         return  resultEntity;
+            roleService.updateRole(role);
+            ResultEntity<String> resultEntity=ResultEntity.successWithoutData();
+            return  resultEntity;
+
     }
 
     /**

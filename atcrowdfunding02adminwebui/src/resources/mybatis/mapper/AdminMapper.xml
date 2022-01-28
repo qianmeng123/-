@@ -9,6 +9,7 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="CHAR" />
   </resultMap>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -151,12 +152,28 @@
       </if>
     </trim>
   </insert>
+
+  <select id="selectPageAndCon" resultMap="BaseResultMap">
+     select id, login_acct, user_pswd, user_name, email, create_time
+    from t_admin
+    where
+    login_acct like '%' #{queryCon} '%' or
+    user_name like  '%'  #{queryCon} '%' or
+     email like     '%' #{queryCon} '%'
+  </select>
+
+
   <select id="countByExample" parameterType="com.atguigu.crowd.entity.AdminExample" resultType="java.lang.Integer" >
     select count(*) from t_admin
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+   <select id="count" resultType="java.lang.Integer">
+      select count(*) from t_admin
+   </select>
+
   <update id="updateByExampleSelective" parameterType="map" >
     update t_admin
     <set >

@@ -15,4 +15,5 @@ public interface RoleService {
     void updateRole(Role role);
 
     void deleteRole(List<Integer> list);
+
 }

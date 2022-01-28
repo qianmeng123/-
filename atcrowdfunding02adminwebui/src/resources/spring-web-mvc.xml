@@ -2,10 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 配置自动扫描的包 -->
     <context:component-scan base-package="com.atguigu.crowd.mvc"/>
+
     <!-- 配置视图解析器 -->
     <!-- 拼接公式→前缀+逻辑视图+后缀=物理视图 -->
     <!-- @RequestMapping("/xxx/xxx")
@@ -22,8 +24,46 @@
         <!-- 后缀：附加到逻辑视图名称后 -->
         <property name="suffix" value=".jsp"/>
     </bean>
-    <!-- 启用注解驱动 -->
-    <mvc:annotation-driven/>
 
+        <!-- 启用注解驱动 -->
+        <mvc:annotation-driven/>
+
+    <!-- springmvc提供的简单异常处理器 -->
+    <bean id="simpleMappingExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!--定义需要特殊处理的异常，这是重要点 -->
+        <property name="exceptionMappings">
+
+            <props>
+                 <!--表示出现java.lang.Exception类型异常时，执行system-error页面-->
+                <prop key="java.lang.Exception">system-error</prop>
+            </props>
+            <!-- 还可以定义其他的自定义异常 -->
+        </property>
+    </bean>
+
+    <!--表明在访问/admin/to/login.html请求时，自动访问admin-login页面
+     一般在不需要写业务逻辑时使用
+    -->
+    <mvc:view-controller path="/admin/to/login.html" view-name="admin-login"/>
+    <mvc:view-controller path="/admin/to/admin.html" view-name="admin"/>
+    <mvc:view-controller path="/admin/to/admin-add.html" view-name="admin-add"/>
+    <mvc:view-controller path="/admin/to/role.html" view-name="admin-role"/>
+    <mvc:view-controller path="/admin/to/menu.html" view-name="admin-menu"/>
+     <!--springmvc拦截器的配置-->
+    <mvc:interceptors>
+        <!--可以有多个拦截器-->
+        <mvc:interceptor>
+            <!--url地址，表示哪个地址发的请求交给该拦截器管理-->
+            <mvc:mapping path="/**"/>
+                                     <!--登陆请求不需要拦截-->
+            <mvc:exclude-mapping path="/admin/do/login.html"/>
+                                     <!--返回到登陆界面的请求不需要拦截-->
+            <mvc:exclude-mapping path="/admin/to/login.html"/>
+                                     <!--登出请求不需要拦截-->
+            <mvc:exclude-mapping path="/admin/to/logout.html"/>
+            <!--拦截器对象-->
+            <bean class="com.atguigu.crowd.mvc.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>

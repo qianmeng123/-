@@ -1,10 +1,10 @@
 package com.atguigu.crowd.mapper;
 
+import com.atguigu.crowd.entity.Auth;
 import com.atguigu.crowd.entity.Role;
 import com.atguigu.crowd.entity.RoleExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public interface RoleMapper {
     int countByExample(RoleExample example);
@@ -39,4 +39,6 @@ public interface RoleMapper {
     void removeInnerRoleAndAdmin(Integer adminId);
 
     void saveInnerRoleAndAdmin(@Param("adminId") Integer adminId,@Param("roleIdList") List<Integer> roleIdList);
+
+    List<Auth> selectAllAuth();
 }

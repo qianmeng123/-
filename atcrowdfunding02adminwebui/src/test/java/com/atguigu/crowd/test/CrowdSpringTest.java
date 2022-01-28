@@ -1,7 +1,9 @@
 package com.atguigu.crowd.test;
 
 import com.atguigu.crowd.entity.Admin;
+import com.atguigu.crowd.entity.Role;
 import com.atguigu.crowd.mapper.AdminMapper;
+import com.atguigu.crowd.mapper.RoleMapper;
 import com.atguigu.crowd.service.api.AdminService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +30,9 @@ public class CrowdSpringTest {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Test
     public void testDataSource() throws SQLException {
 // 1.通过数据源对象获取数据源连接
@@ -38,16 +43,25 @@ public class CrowdSpringTest {
 
     @Test
     public void testAdminMapperAutowired() {
-        Admin admin =new Admin(null,"Tom","123123","汤姆","156@qq.com",null);
+       for (int i=0;i<259;i++){
+           Admin admin =new Admin(null,"Tom"+i,"123123"+i,"汤姆","156@qq.com",null);
 
-         int count=adminMapper.insert(admin);
-        System.out.println(count);
+           int count=adminMapper.insert(admin);
+       }
     }
 
     @Test
     public void testTx(){
         Admin admin =new Admin(null,"Tom","123123","汤姆","156@qq.com",null);
            adminService.saveAdmin(admin);
+    }
+
+    @Test
+    public void testRole(){
+        for (int i=0;i<259;i++){
+           Role role=new Role(null,"role"+i);
+            int count=roleMapper.insert(role);
+        }
     }
 
 }

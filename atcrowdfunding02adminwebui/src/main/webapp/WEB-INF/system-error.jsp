@@ -10,7 +10,7 @@
     <title>Title</title>
 </head>
 <body>
-            <a href="test/ssm.html">点击</a>
-  <h1><%=basePath%></h1>
+  <h1 style="align-content: center">出错了</h1>
+      ${requestScope.exception.message}
 </body>
 </html>
